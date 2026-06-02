@@ -1,0 +1,16 @@
+.body {
+	display: flex;
+	justify-content: center; /* Горизонтальное выравнивание */
+	/*align-items: center; !* Вертикальное выравнивание (опционально) *!*/
+	min-height: 100vh; /* Чтобы контент был по центру экрана */
+	margin: 0;
+
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 75rem; /* или любая другая ширина */
+
+}
