@@ -12,5 +12,6 @@
 	flex-direction: column;
 	align-items: center;
 	width: 75rem; /* или любая другая ширина */
+	background-image: url("/wave.svg");
 
 }

@@ -1,0 +1,28 @@
+.form-builder{
+	display: flex;
+	flex-direction: column;
+	row-gap: 1rem;
+}
+.form-builder label{
+	display: flex;
+	flex-direction: column;
+	text-transform: capitalize;
+}
+
+.form-builder input{
+	box-sizing: border-box;
+	padding: 0.32rem;
+	max-width: 30rem;
+}
+.form-builder select{
+	box-sizing: border-box;
+	padding: 0.32rem;
+	max-width: 20rem;
+}
+
+.form-builder textarea {
+	box-sizing: border-box;
+	max-width: 30rem;
+	resize: none;
+
+}
