@@ -13,7 +13,7 @@ export default function Home() {
             </div>
             <section className={classes.section}>
                 <div className={classes.container}>
-                    {/*ПОКА НЕ РЕАЛИЗОВАНО*/}
+                    {/* ПОИСК ПОКА НЕ РЕАЛИЗОВАНО*/}
                     <div className={classes.search}>
                         <form action="">
                             <label htmlFor="search">Search</label>
