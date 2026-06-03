@@ -2,7 +2,6 @@ import classes from "./page.module.css";
 import Link from "next/link";
 import { ELEMENTS_LIST } from "@/app/lib/mockData";
 
-
 export default function BuilderPage() {
     return (
         <>
@@ -23,12 +22,41 @@ export default function BuilderPage() {
                         <option value={"other"}>other...</option>
                     </select>
                 </label>
-                {/*При выборе в select "Other", должно показываться поле input куда нужно ввести новое имя категории*/}
                 <label htmlFor="new-category">
-                    new stack
+                    new category*
                     <input type="text" name={"new-category"} id={"new-category"} placeholder={"new category"} />
                 </label>
-
+                {/*При выборе в select "Other", должно показываться поле input куда нужно ввести новое имя категории*/}
+                <label htmlFor="subcategory">
+                    take category
+                    {/*Нужно учесть, что при выборе Other категории нужно валидировать, что бы не создавалась категория Other*/}
+                    <select name="subcategory" id="subcategory">
+                        {/* 1. Берем весь список технологий */}
+                        {ELEMENTS_LIST
+                            // 2. Достаем из каждой технологии её подкатегории (если они есть)
+                            .flatMap(sheet => sheet.subcategory || [])
+                            // 3. Фильтруем, чтобы названия подкатегорий не повторялись в списке
+                            .filter((sub, index, self) => self.findIndex(s => s.title === sub.title) === index)
+                            // 4. Рендерим каждую уникальную подкатегорию в option
+                            .map(sub => {
+                                return (
+                                    <option key={sub.title} value={sub.title}>
+                                        {sub.title}
+                                    </option>
+                                );
+                            })}
+                        <option value={"other"}>other...</option>
+                    </select>
+                </label>
+                <label htmlFor="new-subcategory">
+                    new subcategory*
+                    <input
+                        type="text"
+                        name={"new-subcategory"}
+                        id={"new-subcategory"}
+                        placeholder={"new subcategory"}
+                    />
+                </label>
                 <label htmlFor="short-name">
                     short name
                     <input type="text" name={"short-name"} id={"short-name"} placeholder={"enter a short name"} />
