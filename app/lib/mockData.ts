@@ -1,24 +1,42 @@
-type element = {
+export type sheet = {
+    shortName?: string;
+    description?: string;
+    code?: string;
+};
+
+// Новый тип для подкатегорий (hooks, custom hooks)
+export type subcategory = {
+    title: string;
+    sheet: sheet[];
+};
+
+export type element = {
     id?: string | number;
     category?: string;
-    titleSheet?: string;
+    language?: string;
     shortName?: string;
-    blockCode?: string;
     description?: string;
+    // Заменили старый sheet?: sheet[] на массив подкатегорий
+    subcategory?: subcategory[];
 };
+
 export const ELEMENTS_LIST: element[] = [
     {
         id: 1,
         category: "react",
-        titleSheet: "Хук useState",
-        shortName: "useState()",
-        blockCode: `
-import React, { useState } from 'react';
-export default function Counter() {
-  // Инициализируем состояние нуля
-  const [count, setCount] = useState(0);
+        language: "jsx",
+        subcategory: [
+            {
+                title: "hooks",
+                sheet: [
+                    {
+                        shortName: "useState()",
+                        description: "Базовый хук для управления локальным состоянием в функциональных компонентах.",
+                        code: `import React, { useState } from 'react';
 
-  // Обработчик клика для увеличения счетчика
+export default function Counter() {
+  const [count, setCount] = useState(0);
+  
   const handleClick = () => {
     setCount(prevCount => prevCount + 1);
   };
@@ -32,7 +50,81 @@ export default function Counter() {
     </div>
   );
 }`,
-        description: "Базовый хук для управления локальным состоянием в функциональных компонентах.",
+                    },
+                    {
+                        shortName: "useRef()",
+                        description:
+                            "Хук для создания изменяемого объекта, который сохраняется на весь жизненный цикл компонента и не вызывает рендеринг при изменении.",
+                        code: `import React, { useRef } from 'react';
+
+export default function FocusInput() {
+  const inputRef = useRef(null);
+  
+  const handleClick = () => {
+    inputRef.current.focus();
+  };
+
+  return (
+    <div className="p-4 card">
+      <input ref={inputRef} type="text" />
+      <button onClick={handleClick}>
+        Фокус на инпут
+      </button>
+    </div>
+  );
+}`,
+                    },
+                ],
+            },
+            {
+                title: "custom hooks",
+                sheet: [
+                    {
+                        shortName: "useDebounce()",
+                        description:
+                            "Хук задерживает обновление значения до истечения указанного времени, снижая частоту запросов или тяжелых рендеров.",
+                        code: `// useDebounce.ts
+import { useState, useEffect } from "react";
+
+export default function useDebounce<T>(value: T, delay: number = 500): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
+
+// SearchInput.tsx
+import { useState, useEffect } from "react";
+import useDebounce from "./useDebounce";
+
+export default function SearchInput() {
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 300);
+
+  useEffect(() => {
+    if (debouncedSearch) {
+      console.log("Запрос к API для:", debouncedSearch);
+    }
+  }, [debouncedSearch]);
+
+  return (
+    <input
+      type="text"
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+      placeholder="Поиск..."
+    />
+  );
+}`,
+                    },
+                ],
+            },
+        ],
     },
     { id: 2, category: "ts" },
     { id: 3, category: "next.js" },
