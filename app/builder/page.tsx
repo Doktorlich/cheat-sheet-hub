@@ -6,7 +6,7 @@ export default function BuilderPage() {
     return (
         <>
             <Link href={"/.."}>Back</Link>
-            <h1>Builder Page</h1>
+            <h1 className={classes.h1}>Builder Page</h1>
             <form className={classes["form-builder"]} action="">
                 <label htmlFor="category">
                     take category
