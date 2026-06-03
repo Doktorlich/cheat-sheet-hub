@@ -1,22 +1,7 @@
 import classes from "./page.module.css";
 import Link from "next/link";
-type element = {
-    id?: string | number;
-    category?: string;
-    titleSheet?: string;
-};
-const ELEMENT_LIST: element[] = [
-    { id: 1, category: "git" },
-    { id: 2, category: "ts" },
-    { id: 3, category: "next.js" },
-    { id: 4, category: "js" },
-    { id: 5, category: "react" },
-    { id: 6, category: "html" },
-    { id: 7, category: "css" },
-    { id: 8, category: "node.js" },
-    { id: 9, category: "nestjs" },
-    { id: 10, category: "express" },
-];
+import { ELEMENTS_LIST } from "@/app/lib/mockData";
+
 
 export default function BuilderPage() {
     return (
@@ -28,7 +13,7 @@ export default function BuilderPage() {
                     take category
                     {/*Нужно учесть, что при выборе Other категории нужно валидировать, что бы не создавалась категория Other*/}
                     <select name="category" id="category">
-                        {ELEMENT_LIST.map(sheet => {
+                        {ELEMENTS_LIST.map(sheet => {
                             return (
                                 <option key={sheet.id} value={sheet.category}>
                                     {sheet.category}

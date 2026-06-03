@@ -2,23 +2,8 @@ import classes from "./page.module.css";
 import "./globals.css";
 
 import Link from "next/link";
-type element = {
-    id?: string | number;
-    category?: string;
-    titleSheet?: string;
-};
-const ELEMENT_LIST: element[] = [
-    { id: 1, category: "git" },
-    { id: 2, category: "ts" },
-    { id: 3, category: "next.js" },
-    { id: 4, category: "js" },
-    { id: 5, category: "react" },
-    { id: 6, category: "html" },
-    { id: 7, category: "css" },
-    { id: 8, category: "node.js" },
-    { id: 9, category: "nestjs" },
-    { id: 10, category: "express" },
-];
+import { ELEMENTS_LIST } from "@/app/lib/mockData";
+
 
 export default function Home() {
     return (
@@ -38,7 +23,7 @@ export default function Home() {
 
                     <div className={classes["stacks-list"]}>
                         <ul>
-                            {ELEMENT_LIST.map(sheet => {
+                            {ELEMENTS_LIST.map(sheet => {
                                 return (
                                     <li key={sheet.id}>
                                         <Link href={`/${sheet.category}`}>
