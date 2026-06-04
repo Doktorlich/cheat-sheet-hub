@@ -76,9 +76,9 @@
 .stacks-list li:hover {
     cursor: pointer;
 
-    background: #007bff;
+    color: #fff;
     border-color: #007bff;
-    color: #ffffff;
+    background: #007bff;
     box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
 }
 
@@ -94,17 +94,125 @@
     width: 5rem;
     padding: 0.25rem;
 
+    transition: all 0.2s ease;
     text-decoration: none;
     text-transform: uppercase;
 
-
-    background: rgba(255, 255, 255, 0.8);
-    border: 0.16rem solid #e2e8f0;
     color: #334155;
-    transition: all 0.2s ease;
+    border: 0.16rem solid #e2e8f0;
+    background: rgba(255, 255, 255, 0.8);
 }
 .stacks-list a:active,
 .stacks-list a:link,
 .stacks-list a:visited {
     color: #000;
+}
+/* Контейнер поиска */
+.search {
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+.search form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem; /* Отступ между текстовым лейблом и полем */
+}
+
+/* Стилизация текста "Search" */
+.search label {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    /* Сине-серый глубокий оттенок, как заголовки хуков */
+    color: #1e293b;
+    text-transform: capitalize;
+}
+
+/* Стилизация поля ввода в стиле Glassmorphism */
+.search input {
+    width: 100%;
+    max-width: 22rem; /* Оптимальная ширина по сетке */
+    padding: 0.6rem 1rem;
+
+    font-size: 14px;
+    color: #1e293b;
+
+    /* Полупрозрачный стеклянный фон, как у ваших карточек */
+    background: rgba(255, 255, 255, 0.7);
+    /* Тонкая граница с легким синим оттенком */
+    border: 1px solid rgba(0, 123, 255, 0.15);
+    border-radius: 12px; /* Закругление в цвет карточек хуков */
+
+    outline: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+
+    /* Плавный переход всех эффектов */
+    transition: all 0.25s ease;
+}
+
+/* Эффект при клике (Focus) */
+.search input:focus {
+    background: #ffffff;
+    border-color: #007bff; /* Ваша фирменная синяя рамка */
+    /* Мягкое неоновое свечение вокруг инпута */
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.12), 0 4px 12px rgba(0, 123, 255, 0.05);
+}
+
+/* Стиль для плейсхолдера "Input the text" */
+.search input::placeholder {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+/* Очистка дефолтных системных иконок крестика в Chrome/Safari */
+.search input::-webkit-search-decoration,
+.search input::-webkit-search-cancel-button,
+.search input::-webkit-search-results-button,
+.search input::-webkit-search-results-decoration {
+    display: none;
+}
+
+
+.builder {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+/* Базовое состояние для всех типов ссылок */
+.builder a,
+.builder a:link,
+.builder a:visited,
+.builder a:active {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 0.4rem; /* Отступ между текстом и стрелочкой */
+
+    font-size: 24px;
+    font-weight: 700;
+    text-decoration: none !important;
+    color: #1e293b !important;
+    transition: color 0.2s ease;
+}
+
+/* Создаем иконку стрелочки после текста */
+.builder a::after {
+    content: "➔"; /* Изящная стрелка вправо */
+    font-size: 18px; /* Чуть меньше основного текста для баланса */
+    transition: transform 0.2s ease; /* Плавное движение */
+}
+
+/* Эффект при наведении */
+.builder a:hover {
+    color: #007bff !important;
+    text-decoration: underline !important;
+    text-underline-offset: 6px;
+}
+
+/* При наведении стрелочка красиво сдвигается вправо */
+.builder a:hover::after {
+    transform: translateX(4px);
 }

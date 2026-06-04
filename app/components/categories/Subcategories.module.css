@@ -1,0 +1,124 @@
+.section {
+    margin-bottom: 40px; /* Отступ между большими карточками */
+    padding: 32px; /* Внутренние отступы группы */
+
+    border: 1px solid #e0f2fe; /* Едва заметный контур */
+    border-radius: 16px; /* Скругленные углы большой карточки */
+    background-color: #fff; /* Белый фон контейнера */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Легкая тень */
+}
+.subcategoryTitle {
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 1.75rem;
+
+    margin-top: 0;
+    margin-bottom: 24px;
+    /* Красивая линия под заголовком */
+    padding-bottom: 12px; /* Отступ текста от линии */
+
+    color: #0284c7; /* Синеватый оттенок для заголовка */
+    border-bottom: 2px solid #e0f2fe; /* Толщина и бледный цвет линии */
+    border-radius: 2px; /* Мягкое скругление краев линии */
+}
+@keyframes fadeIn {
+    from {
+        transform: translateY(-10px);
+
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+
+        opacity: 1;
+    }
+}
+
+.sheets-list {
+    display: flex;
+    flex-wrap: wrap;
+
+    max-width: 65rem;
+    margin: 2rem auto;
+    padding: 0;
+
+    row-gap: 2rem;
+    column-gap: 2rem;
+}
+.sheets-list li {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    max-width: 25rem;
+    padding: 1.5rem;
+
+    list-style: none;
+
+    border: 1px solid #eef2f6;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+
+    row-gap: 1rem;
+}
+
+.sheets-list li h3 {
+    font-family: "JetBrains Mono", "Fira Code", monospace; /* Моноширинный шрифт */
+    font-size: 1.35rem;
+
+    margin: 0;
+
+    color: #087ea4; /* Фирменный синий цвет React */
+}
+.sheets-list li p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+
+    margin: 0;
+
+    color: #4a5568; /* Мягкий темный цвет для лучшей читаемости */
+}
+
+.code {
+    position: relative;
+
+    overflow: hidden; /* Чтобы углы кода внутри не вылезали наружу */
+
+    border-radius: 8px;
+}
+
+.code button {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem; /* Позиционируем в правый верхний угол блока кода */
+
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+
+    transition: all 0.2s ease;
+
+    opacity: 0; /* Скрываем кнопку по умолчанию */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.08); /* Полупрозрачный фон */
+    background-image: url("/copy.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 55%;
+}
+
+.code:hover button {
+    opacity: 1;
+}
+
+.code button:hover {
+    cursor: pointer;
+
+    border-color: rgba(255, 255, 255, 0.25);
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.code button:active {
+    transform: scale(0.95);
+}
