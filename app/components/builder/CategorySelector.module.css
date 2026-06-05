@@ -1,0 +1,14 @@
+.visible {
+	transition: all 1s ease-in-out;
+}
+.invisible {
+	position: absolute;
+	/*position: absolute;*/
+
+	visibility: hidden;
+
+	width: 0.16rem;
+	height: 0.16rem;
+
+	opacity: 0;
+}

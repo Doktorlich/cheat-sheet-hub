@@ -1,52 +1,66 @@
 /* Контейнер формы */
 .h1 {
-	font-size: 2.25rem;
-	color: #0f172a; /* Глубокий темно-синий/серый цвет */
-	font-family: ui-sans-serif, system-ui, sans-serif;
-	font-weight: 700;
-	margin-top: 1.5rem;
-	margin-bottom: 2rem;
-	letter-spacing: -0.025em; /* Слегка уменьшенное межбуквенное расстояние для стиля */
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 2.25rem;
+    font-weight: 700;
+
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+
+    letter-spacing: -0.025em; /* Слегка уменьшенное межбуквенное расстояние для стиля */
+
+    color: #0f172a; /* Глубокий темно-синий/серый цвет */
 }
 .form-builder {
     display: flex;
     flex-direction: column;
-    row-gap: 1.5rem; /* Немного увеличили отступы для «воздуха» */
-    background-color: #ffffff;
-    padding: 2.5rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e0f2fe;
+
     max-width: 35rem; /* Ограничили ширину всей формы для аккуратности */
     margin: 2rem 0;
+    padding: 2.5rem;
+
+    border: 1px solid #e0f2fe;
+    border-radius: 16px;
+    background-color: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+    row-gap: 1.5rem; /* Немного увеличили отступы для «воздуха» */
 }
 
 /* Лейблы (подписи к полям) */
 .form-builder label {
-    display: flex;
-    flex-direction: column;
-    row-gap: 0.5rem; /* Отступ между текстом лейбла и самим полем */
-    text-transform: capitalize;
     font-family: ui-sans-serif, system-ui, sans-serif;
     font-size: 0.95rem;
-    color: #334155; /* Мягкий темный цвет для текста */
     font-weight: 500;
+
+    display: flex;
+    flex-direction: column;
+
+    transition: all 0.3s ease-in-out;
+    text-transform: capitalize;
+
+    color: #334155; /* Мягкий темный цвет для текста */
+
+    row-gap: 0.5rem; /* Отступ между текстом лейбла и самим полем */
 }
 
 /* Общие базовые стили для всех интерактивных полей ввода */
 .form-builder input,
 .form-builder select,
 .form-builder textarea {
+    font-family: inherit;
+    font-size: 0.95rem;
+
     box-sizing: border-box;
     width: 100%; /* Занимают всю доступную ширину родительского лейбла */
     padding: 0.6rem 0.8rem; /* Увеличили внутренние отступы для удобства клика */
+
+    transition: all 0.2s ease; /* Плавный переход при фокусе */
+
+    color: #0f172a;
     border: 1px solid #cbd5e1; /* Базовая аккуратная рамка */
     border-radius: 8px; /* Скругление углов в тон карточкам */
     background-color: #f8fafc; /* Бледно-серый фон для полей */
-    color: #0f172a;
-    font-size: 0.95rem;
-    font-family: inherit;
-    transition: all 0.2s ease; /* Плавный переход при фокусе */
 }
 
 /* Ограничения максимальной ширины */
@@ -56,13 +70,15 @@
 
 .form-builder select {
     max-width: 20rem;
+
     cursor: pointer;
 }
 
 .form-builder textarea {
     max-width: 30rem;
-    resize: none;
     min-height: 8rem; /* Задали комфортную начальную высоту для кода и описания */
+
+    resize: none;
 }
 
 /* Эффект при наведении на поля */
@@ -76,29 +92,34 @@
 .form-builder input:focus,
 .form-builder select:focus,
 .form-builder textarea:focus {
-    outline: none;
-    background-color: #ffffff; /* Поле становится чисто белым */
     border-color: #0284c7; /* Синий бренд-цвет как у заголовков h2 */
+    outline: none;
+    background-color: #fff; /* Поле становится чисто белым */
     box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15); /* Мягкое внешнее свечение */
 }
 
 /* Контейнер для кнопок */
 .list-button {
     display: flex;
-    gap: 1rem;
+
     margin-top: 0.5rem;
+
+    gap: 1rem;
 }
 
 /* Кнопка отправки (Submit) */
 .list-button button[type="submit"] {
-    padding: 0.6rem 1.5rem;
-    background-color: #0284c7; /* Основной синий цвет */
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
     font-weight: 500;
+
+    padding: 0.6rem 1.5rem;
+
     cursor: pointer;
     transition: background-color 0.2s ease;
+
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    background-color: #0284c7; /* Основной синий цвет */
 }
 
 .list-button button[type="submit"]:hover {
@@ -107,18 +128,22 @@
 
 /* Кнопка очистки (Clear) */
 .list-button button[type="button"] {
+    font-weight: 500;
+
     padding: 0.6rem 1.5rem;
-    background-color: transparent;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+
     color: #64748b; /* Нейтральный серый цвет текста */
     border: 1px solid #cbd5e1;
     border-radius: 8px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
+    background-color: transparent;
 }
 
 .list-button button[type="button"]:hover {
-    background-color: #f1f5f9;
     color: #334155;
     border-color: #94a3b8;
+    background-color: #f1f5f9;
 }
+
