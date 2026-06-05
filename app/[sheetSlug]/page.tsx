@@ -2,7 +2,7 @@ import classes from "./page.module.css";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getSheet } from "@/app/lib/actions";
-import Subcategories from "@/app/components/categories/Subcategories";
+import Subcategories from "@/app/components/sheet/Subcategories";
 import Link from "next/link";
 
 type Props = {

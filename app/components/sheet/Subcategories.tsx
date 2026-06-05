@@ -1,7 +1,7 @@
-import CodeBlock from "@/app/components/categories/CodeBlock";
+import CodeBlock from "@/app/components/sheet/CodeBlock";
 import { ELEMENTS_LIST, subcategory } from "@/app/lib/mockData";
 import classes from "./Subcategories.module.css";
-import ButtonCopy from "@/app/components/categories/ButtonCopy";
+import ButtonCopy from "@/app/components/sheet/ButtonCopy";
 
 interface SubcategoriesProps {
     sheetSlug: string;
