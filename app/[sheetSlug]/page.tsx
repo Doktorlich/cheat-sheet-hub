@@ -2,8 +2,8 @@ import classes from "./page.module.css";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getSheet } from "@/app/lib/actions";
-import { ELEMENTS_LIST, subcategory } from "@/app/lib/mockData";
 import Subcategories from "@/app/components/categories/Subcategories";
+import Link from "next/link";
 
 type Props = {
     params: Promise<{ sheetSlug: string }>;
@@ -24,6 +24,7 @@ export default async function SheetPage({ params }: Props) {
     return (
         <main className={classes.container}>
             <h1 className={classes.h1}>{sheetSlug}</h1>
+            <Link href={"/.."}>Back</Link>
 
             <Subcategories sheetSlug={sheetSlug} />
         </main>

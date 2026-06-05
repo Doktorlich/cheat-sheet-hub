@@ -1,6 +1,7 @@
-import CodeBlock from "@/app/components/builder/CodeBlock";
+import CodeBlock from "@/app/components/categories/CodeBlock";
 import { ELEMENTS_LIST, subcategory } from "@/app/lib/mockData";
 import classes from "./Subcategories.module.css";
+import ButtonCopy from "@/app/components/categories/ButtonCopy";
 
 interface SubcategoriesProps {
     sheetSlug: string;
@@ -14,6 +15,8 @@ export default function Subcategories({ sheetSlug }: SubcategoriesProps) {
     if (!subcategories) {
         throw new Error("subcategories not found");
     }
+
+
     return (
         <>
             {/* 1-й MAP: Перебираем блоки подкатегорий (hooks, custom hooks) */}
@@ -31,7 +34,7 @@ export default function Subcategories({ sheetSlug }: SubcategoriesProps) {
                                         <div className={classes["code-block"]}>
                                             <div className={classes.code}>
                                                 <CodeBlock code={String(item.code)} language={"jsx"} />
-                                                <button type={"button"}></button>
+                                                <ButtonCopy inputCode={item.code!}/>
                                             </div>
                                         </div>
                                         <p>{item.description}</p>

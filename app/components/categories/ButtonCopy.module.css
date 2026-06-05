@@ -1,0 +1,49 @@
+.button {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem; /* Позиционируем в правый верхний угол блока кода */
+
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+
+    transition: all 0.2s ease;
+
+    opacity: 0; /* Скрываем кнопку по умолчанию */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.08); /* Полупрозрачный фон */
+    background-image: url("/copy.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 55%;
+}
+/* Стили при успешном копировании в синей палитре вашего интерфейса */
+.button.copied {
+    color: #087ea4; /* Тот же фирменный синий цвет, что и у ваших h3 */
+    border-color: #e0f2fe; /* Нежный голубой контур, как у секций */
+    background-color: #e0f2fe; /* Светло-голубой фон карточки при успехе */
+    background-image: url("/completed.svg");
+    opacity: 1; /* Кнопка остается видимой, пока активен статус "Скопировано" */
+}
+.button:hover button {
+    opacity: 1;
+}
+
+
+
+
+.button:hover {
+    cursor: pointer;
+
+    border-color: rgba(255, 255, 255, 0.25);
+    background-color: rgba(255, 255, 255, 0.15);
+}
+.button.copied:hover {
+    cursor: pointer;
+    background-color: #e0f2fe;
+
+}
+.button:active {
+    transform: scale(0.95);
+}
