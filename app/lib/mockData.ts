@@ -126,7 +126,63 @@ export default function SearchInput() {
             },
         ],
     },
-    { id: 2, category: "ts" },
+    {
+        id: 2,
+        category: "ts",
+        language: "typescript",
+        subcategory: [
+            {
+                title: "utility types",
+                sheet: [
+                    {
+                        shortName: "Partial<T>",
+                        description: "Делает все свойства типа необязательными.",
+                        code: `interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+function updateUser(id: number, fieldsToUpdate: Partial<User>) {
+  return { id, ...fieldsToUpdate };
+}`,
+                    },
+                    {
+                        shortName: "Pick<T, K>",
+                        description: "Создает тип, выбирая набор свойств K из типа T.",
+                        code: `interface Todo {
+  id: number;
+  title: string;
+  completed: boolean;
+}
+
+type TodoPreview = Pick<Todo, "title" | "completed">;
+
+const todo: TodoPreview = {
+  title: "Купить молоко",
+  completed: false
+};`,
+                    },
+                ],
+            },
+            {
+                title: "generics",
+                sheet: [
+                    {
+                        shortName: "Generic Functions",
+                        description: "Компоненты, способные работать с различными типами, а не с одним единственным.",
+                        code: `function identity<T>(arg: T): T {
+  return arg;
+}
+
+const output1 = identity<string>("myString");
+const output2 = identity<number>(100);`,
+                    },
+                ],
+            },
+        ],
+    },
+
     { id: 3, category: "next.js" },
     { id: 4, category: "js" },
     { id: 5, category: "git" },
