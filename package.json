@@ -16,6 +16,7 @@
     "react-dom": "19.2.4",
     "react-syntax-highlighter": "^16.1.1",
     "slugify": "^1.6.9",
+    "uuid": "^14.0.0",
     "xss": "^1.0.15"
   },
   "devDependencies": {

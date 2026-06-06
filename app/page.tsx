@@ -2,8 +2,15 @@ import classes from "./page.module.css";
 import "./globals.css";
 
 import Link from "next/link";
-import { ELEMENTS_LIST } from "@/app/lib/mockData";
+import { getCategories } from "@/app/lib/cheatSheet";
+import CategoriesList from "@/app/components/home/CategoriesList";
+import { ICategory } from "@/app/lib/types/type-db";
+import { Suspense } from "react";
 
+async function Categories() {
+    const categories: ICategory[] = await getCategories();
+    return <CategoriesList categories={categories} />;
+}
 
 export default function Home() {
     return (
@@ -20,20 +27,9 @@ export default function Home() {
                             <input type="search" id={"search"} placeholder={"Input the text"} />
                         </form>
                     </div>
-
-                    <div className={classes["stacks-list"]}>
-                        <ul>
-                            {ELEMENTS_LIST.map(sheet => {
-                                return (
-                                    <li key={sheet.id}>
-                                        <Link href={`/${sheet.category}`}>
-                                            <h3>{sheet.category}</h3>
-                                        </Link>
-                                    </li>
-                                );
-                            }).sort()}
-                        </ul>
-                    </div>
+                    <Suspense fallback={<p className={classes.loading}>Fetching meals...</p>}>
+                        <Categories />
+                    </Suspense>
                 </div>
             </section>
         </>

@@ -2,6 +2,14 @@ import classes from "./page.module.css";
 import Link from "next/link";
 
 import CategorySelector from "@/app/components/builder/CategorySelector";
+import { ICategory } from "@/app/lib/types/type-db";
+import { getAllCategoriesData } from "@/app/lib/cheatSheet";
+import { Suspense } from "react";
+
+async function Categories() {
+    const categories: ICategory[] = await getAllCategoriesData();
+    return <CategorySelector categories={categories} />;
+}
 
 export default function BuilderPage() {
     return (
@@ -9,7 +17,9 @@ export default function BuilderPage() {
             <Link href={"/.."}>Back</Link>
             <h1 className={classes.h1}>Builder Page</h1>
             <form className={classes["form-builder"]} action="">
-                <CategorySelector />
+                <Suspense fallback={<p className={classes.loading}>Fetching categories...</p>}>
+                    <Categories />
+                </Suspense>
                 <label htmlFor="short-name">
                     short name
                     <input type="text" name={"short-name"} id={"short-name"} placeholder={"enter a short name"} />

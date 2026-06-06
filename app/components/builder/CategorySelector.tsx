@@ -2,9 +2,13 @@
 
 import classes from "./CategorySelector.module.css";
 import React, { useState } from "react";
-import { ELEMENTS_LIST } from "@/app/lib/mockData";
+import { ICategory } from "@/app/lib/types/type-db";
 
-export default function CategorySelector({}) {
+interface CategorySelectorProps {
+    categories: ICategory[];
+}
+
+export default function CategorySelector({ categories }: CategorySelectorProps) {
     const [isSelectOther, setIsSelectOther] = useState<string>("other");
     const [isSelectSubOther, setIsSelectSubOther] = useState<string>("other");
 
@@ -12,11 +16,12 @@ export default function CategorySelector({}) {
         setIsSelectOther(e.target.value);
         setIsSelectSubOther("other");
     }
+
     function handleSelectSubOption(e: React.ChangeEvent<HTMLSelectElement>): void {
         setIsSelectSubOther(e.target.value);
     }
 
-    const currentCategoryData = ELEMENTS_LIST.find(sheet => sheet.category === isSelectOther);
+    const currentCategoryData = categories.find(sheet => sheet.category === isSelectOther);
     return (
         <>
             {/*При выборе в select "Other", должно показываться поле input куда нужно ввести новое имя категории*/}
@@ -25,7 +30,7 @@ export default function CategorySelector({}) {
                 {/*Нужно учесть, что при выборе Other категории нужно валидировать, что бы не создавалась категория Other*/}
                 <select name="category" id="category" value={isSelectOther} onChange={e => handleSelectOption(e)}>
                     <option value={"other"}>other...</option>
-                    {ELEMENTS_LIST.map(sheet => {
+                    {categories.map(sheet => {
                         return (
                             <option key={sheet.id} value={sheet.category}>
                                 {sheet.category}

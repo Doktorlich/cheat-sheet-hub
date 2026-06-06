@@ -1,21 +1,20 @@
 import CodeBlock from "@/app/components/sheet/CodeBlock";
-import { ELEMENTS_LIST, subcategory } from "@/app/lib/mockData";
 import classes from "./CheatSheetList.module.css";
 import ButtonCopy from "@/app/components/sheet/ButtonCopy";
+import { getCategory } from "@/app/lib/cheatSheet";
+import { ICategory, Subcategory } from "@/app/lib/types/type-db";
 
 interface CheatSheetListProps {
     sheetSlug: string;
 }
 
-export default function CheatSheetList({ sheetSlug }: CheatSheetListProps) {
-    const [sheetFirstElem] = ELEMENTS_LIST.filter(e => e.category === sheetSlug);
-    // Достаем массив подкатегорий subcategory вместо старого sheet
-    const subcategories: subcategory[] | undefined = sheetFirstElem.subcategory;
+export default async function CheatSheetList({ sheetSlug }: CheatSheetListProps) {
+    const categories: ICategory = await getCategory(sheetSlug);
+    const subcategories: Subcategory[] = categories.subcategory;
 
     if (!subcategories) {
         throw new Error("subcategories not found");
     }
-
 
     return (
         <>

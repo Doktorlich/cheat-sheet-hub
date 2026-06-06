@@ -16,15 +16,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function SheetPage({ params }: Props) {
     const { sheetSlug } = await params;
-    const cheatSheet = getSheet(sheetSlug);
-    if (!cheatSheet) {
-        notFound();
-    }
 
     return (
         <main className={classes.container}>
             <h1 className={classes.h1}>{sheetSlug}</h1>
-            <Link href={"/.."} className={classes["link-back"]}>Back</Link>
+            <Link href={"/.."} className={classes["link-back"]}>
+                Back
+            </Link>
 
             <CheatSheetList sheetSlug={sheetSlug} />
         </main>
