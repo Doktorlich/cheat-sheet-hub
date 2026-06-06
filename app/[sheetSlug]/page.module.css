@@ -4,19 +4,58 @@
     padding: 0 1.5rem;
 }
 .h1 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 2.8rem; /* Крупный, заметный размер */
+    font-weight: 800; /* Жирное, современное начертание */
+
     margin-top: 3rem; /* Отступ сверху от края экрана */
     margin-bottom: 2rem; /* Отступ снизу до карточек */
 
+    animation: fadeIn 0.8s ease-out;
+    text-align: center; /* Выравнивание по центру */
+    letter-spacing: -0.05em; /* Слегка сближенные буквы для стиля */
+    text-transform: uppercase;
+
     background: linear-gradient(135deg, #087ea4 0%, #044e66 100%);
     -webkit-background-clip: text;
-    font-weight: 800; /* Жирное, современное начертание */
-    font-size: 2.8rem; /* Крупный, заметный размер */
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    letter-spacing: -0.05em; /* Слегка сближенные буквы для стиля */
-    text-align: center; /* Выравнивание по центру */
-    text-transform: capitalize;
-
-    animation: fadeIn 0.8s ease-out;
 
     -webkit-text-fill-color: transparent;
+}
+
+.link-back {
+    /* Шрифт и цвет как на макете */
+    font-family: sans-serif; /* Или ваш глобальный шрифт, например Inter */
+    font-size: 14px;
+    font-weight: 500;
+    /* Позиционирование над белой карточкой */
+
+    display: inline-block;
+
+    margin-bottom: 12px; /* Отступ до белого блока */
+    margin-left: 4px; /* Небольшой отступ слева, чтобы быть вровень с карточкой */
+    /* Плавный эффект при наведении */
+
+    transition: color 0.2s ease;
+    text-decoration: none; /* Убираем стандартное подчеркивание */
+
+    color: #4a5568; /* Мягкий темно-серый цвет */
+}
+
+/* Эффект при наведении (hover) */
+.link-back:hover {
+    text-decoration: underline; /* Появляется аккуратное подчеркивание */
+
+    color: #1a202c; /* Ссылка становится чуть темнее */
+}
+.link-back::before {
+    font-size: 1rem; /* Чуть меньше основного текста для баланса */
+
+    display: inline-block;
+
+    content: "🡸"; /* Изящная стрелка вправо */
+    transition: transform 0.2s ease; /* Плавное движение */
+}
+
+.link-back:hover::before {
+    transform: translateX(-4px);
 }

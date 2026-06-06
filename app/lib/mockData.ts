@@ -1,4 +1,5 @@
 export type sheet = {
+    id: string | number;
     shortName?: string;
     description?: string;
     code?: string;
@@ -6,11 +7,12 @@ export type sheet = {
 
 // Новый тип для подкатегорий (hooks, custom hooks)
 export type subcategory = {
+    id: string | number;
     title: string;
     sheet: sheet[];
 };
 
-export type element = {
+export interface element {
     id?: string | number;
     category?: string;
     language?: string;
@@ -27,9 +29,11 @@ export const ELEMENTS_LIST: element[] = [
         language: "jsx",
         subcategory: [
             {
+                id: 1,
                 title: "hooks",
                 sheet: [
                     {
+                        id: 1,
                         shortName: "useState()",
                         description: "Базовый хук для управления локальным состоянием в функциональных компонентах.",
                         code: `import React, { useState } from 'react';
@@ -52,6 +56,7 @@ export default function Counter() {
 }`,
                     },
                     {
+                        id: 2,
                         shortName: "useRef()",
                         description:
                             "Хук для создания изменяемого объекта, который сохраняется на весь жизненный цикл компонента и не вызывает рендеринг при изменении.",
@@ -77,9 +82,11 @@ export default function FocusInput() {
                 ],
             },
             {
+                id: 2,
                 title: "custom hooks",
                 sheet: [
                     {
+                        id: 3,
                         shortName: "useDebounce()",
                         description:
                             "Хук задерживает обновление значения до истечения указанного времени, снижая частоту запросов или тяжелых рендеров.",
@@ -128,13 +135,15 @@ export default function SearchInput() {
     },
     {
         id: 2,
-        category: "ts",
-        language: "typescript",
+        category: "typescript",
+        language: "ts",
         subcategory: [
             {
+                id: 3,
                 title: "utility types",
                 sheet: [
                     {
+                        id: 4,
                         shortName: "Partial<T>",
                         description: "Делает все свойства типа необязательными.",
                         code: `interface User {
@@ -148,6 +157,7 @@ function updateUser(id: number, fieldsToUpdate: Partial<User>) {
 }`,
                     },
                     {
+                        id: 5,
                         shortName: "Pick<T, K>",
                         description: "Создает тип, выбирая набор свойств K из типа T.",
                         code: `interface Todo {
@@ -166,9 +176,11 @@ const todo: TodoPreview = {
                 ],
             },
             {
+                id: 4,
                 title: "generics",
                 sheet: [
                     {
+                        id: 6,
                         shortName: "Generic Functions",
                         description: "Компоненты, способные работать с различными типами, а не с одним единственным.",
                         code: `function identity<T>(arg: T): T {
@@ -184,7 +196,7 @@ const output2 = identity<number>(100);`,
     },
 
     { id: 3, category: "next.js" },
-    { id: 4, category: "js" },
+    { id: 4, category: "javascript" },
     { id: 5, category: "git" },
     { id: 6, category: "html" },
     { id: 7, category: "css" },
@@ -192,3 +204,4 @@ const output2 = identity<number>(100);`,
     { id: 9, category: "nestjs" },
     { id: 10, category: "express" },
 ];
+

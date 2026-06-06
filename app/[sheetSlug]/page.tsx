@@ -2,7 +2,7 @@ import classes from "./page.module.css";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getSheet } from "@/app/lib/actions";
-import Subcategories from "@/app/components/sheet/Subcategories";
+import CheatSheetList from "@/app/components/sheet/CheatSheetList";
 import Link from "next/link";
 
 type Props = {
@@ -24,9 +24,9 @@ export default async function SheetPage({ params }: Props) {
     return (
         <main className={classes.container}>
             <h1 className={classes.h1}>{sheetSlug}</h1>
-            <Link href={"/.."}>Back</Link>
+            <Link href={"/.."} className={classes["link-back"]}>Back</Link>
 
-            <Subcategories sheetSlug={sheetSlug} />
+            <CheatSheetList sheetSlug={sheetSlug} />
         </main>
     );
 }
