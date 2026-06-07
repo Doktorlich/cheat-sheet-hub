@@ -20,4 +20,6 @@ export interface ICategory {
     description: string;
     // Заменили старый sheet?: sheet[] на массив подкатегорий
     subcategory: Subcategory[];
+
+
 }

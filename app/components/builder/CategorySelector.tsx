@@ -21,7 +21,9 @@ export default function CategorySelector({ categories }: CategorySelectorProps) 
         setIsSelectSubOther(e.target.value);
     }
 
-    const currentCategoryData = categories.find(sheet => sheet.category === isSelectOther);
+    const currentCategoryData = categories.find(sheet => sheet.id === isSelectOther);
+
+
     return (
         <>
             {/*При выборе в select "Other", должно показываться поле input куда нужно ввести новое имя категории*/}
@@ -32,7 +34,7 @@ export default function CategorySelector({ categories }: CategorySelectorProps) 
                     <option value={"other"}>other...</option>
                     {categories.map(sheet => {
                         return (
-                            <option key={sheet.id} value={sheet.category}>
+                            <option key={sheet.id} value={sheet.id}>
                                 {sheet.category}
                             </option>
                         );
@@ -51,13 +53,13 @@ export default function CategorySelector({ categories }: CategorySelectorProps) 
                     name="subcategory"
                     id="subcategory"
                     value={isSelectSubOther}
-                    disabled={!isSelectOther || isSelectOther === "other"}
+                    // disabled={!isSelectOther || isSelectOther === "other"}
                     onChange={e => handleSelectSubOption(e)}
                 >
                     <option value={"other"}>other...</option>
                     {currentCategoryData?.subcategory?.map(sub => {
                         return (
-                            <option key={sub.title} value={sub.title}>
+                            <option key={sub.id} value={sub.id}>
                                 {sub.title}
                             </option>
                         );

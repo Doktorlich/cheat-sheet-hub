@@ -1,26 +1,26 @@
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const sql = require("better-sqlite3");
-const db = sql("elements.db"); // Изменили название файла БД для ясности
+const db = sql("elements.db");
 
-// Ваши новые данные
+// Ваши новые данные с UUID
 const ELEMENTS_LIST = [
     {
-        id: 1,
+        id: "729d7494-df81-420a-86cc-e70a4175396a",
         category: "react",
         language: "jsx",
         subcategory: [
             {
-                id: 1,
+                id: "3e5bbca2-fdbb-4112-9c10-cae51cf1863f",
                 title: "hooks",
                 sheet: [
                     {
-                        id: 1,
+                        id: "960579e2-51a4-47f9-906f-7389a912bbbc",
                         shortName: "useState()",
                         description: "Базовый хук для управления локальным состоянием в функциональных компонентах.",
                         code: `import React, { useState } from 'react';\n\nexport default function Counter() {\n  const [count, setCount] = useState(0);\n  \n  const handleClick = () => {\n    setCount(prevCount => prevCount + 1);\n  };\n\n  return (\n    <div className="p-4 card">\n      <p>Вы кликнули {count} раз</p>\n      <button onClick={handleClick}>\n        Нажми на меня\n      </button>\n    </div>\n  );\n}`,
                     },
                     {
-                        id: 2,
+                        id: "47228a05-bd88-466d-aba2-a9b086f6630f",
                         shortName: "useRef()",
                         description:
                             "Хук для создания изменяемого объекта, который сохраняется на весь жизненный цикл компонента и не вызывает рендеринг при изменении.",
@@ -29,11 +29,11 @@ const ELEMENTS_LIST = [
                 ],
             },
             {
-                id: 2,
+                id: "ce3e8cb1-80a5-48fa-89e9-f2e1dfda95fb",
                 title: "custom hooks",
                 sheet: [
                     {
-                        id: 3,
+                        id: "542a2b37-29cb-4fa1-8280-5bfa607e868a",
                         shortName: "useDebounce()",
                         description:
                             "Хук задерживает обновление значения до истечения указанного времени, снижая частоту запросов или тяжелых рендеров.",
@@ -44,22 +44,22 @@ const ELEMENTS_LIST = [
         ],
     },
     {
-        id: 2,
+        id: "d83fb2ba-94bc-448f-9a40-2810a9cfcb12",
         category: "typescript",
         language: "ts",
         subcategory: [
             {
-                id: 3,
+                id: "898a96fc-9e32-4752-9441-df396e949666",
                 title: "utility types",
                 sheet: [
                     {
-                        id: 4,
+                        id: "be9ba0ee-3e0e-4fa2-bf4f-eef49e8979cb",
                         shortName: "Partial<T>",
                         description: "Делает все свойства типа необязательными.",
                         code: `interface User {\n  id: number;\n  name: string;\n  email: string;\n}\n\nfunction updateUser(id: number, fieldsToUpdate: Partial<User>) {\n  return { id, ...fieldsToUpdate };\n}`,
                     },
                     {
-                        id: 5,
+                        id: "277bbfe6-a9cc-47ee-80fb-cd7fe77508fa",
                         shortName: "Pick<T, K>",
                         description: "Создает тип, выбирая набор свойств K из типа T.",
                         code: `interface Todo {\n  id: number;\n  title: string;\n  completed: boolean;\n}\n\ntype TodoPreview = Pick<Todo, "title" | "completed">;\n\nconst todo: TodoPreview = {\n  title: "Купить молоко",\n  completed: false\n};`,
@@ -67,11 +67,11 @@ const ELEMENTS_LIST = [
                 ],
             },
             {
-                id: 4,
+                id: "b458b688-4cbf-488f-99e2-2a77b8f9e612",
                 title: "generics",
                 sheet: [
                     {
-                        id: 6,
+                        id: "198aee80-5a33-4fdb-a808-8df0e782ea2e",
                         shortName: "Generic Functions",
                         description: "Компоненты, способные работать с различными типами, а не с одним единственным.",
                         code: `function identity<T>(arg: T): T {\n  return arg;\n}\n\nconst output1 = identity<string>("myString");\nconst output2 = identity<number>(100);`,
@@ -82,43 +82,45 @@ const ELEMENTS_LIST = [
     },
 ];
 
-// Создаем таблицы с внешними ключами для связей
+// Включаем поддержку внешних ключей в SQLite
+db.pragma("foreign_keys = ON");
+
+// Создаем таблицы с правильным типом TEXT для всех ID
 db.prepare(
     `
-   CREATE TABLE IF NOT EXISTS elements (
-       id INTEGER PRIMARY KEY,
-       category TEXT NOT NULL,
-       language TEXT
-    )
+    CREATE TABLE IF NOT EXISTS elements (
+                                            id TEXT PRIMARY KEY,
+                                            category TEXT,
+                                            language TEXT
+    );
 `,
 ).run();
 
 db.prepare(
     `
-   CREATE TABLE IF NOT EXISTS subcategories (
-       id INTEGER PRIMARY KEY,
-       element_id INTEGER,
-       title TEXT NOT NULL,
-       FOREIGN KEY (element_id) REFERENCES elements (id) ON DELETE CASCADE
-    )
+    CREATE TABLE IF NOT EXISTS subcategories (
+                                                 id TEXT PRIMARY KEY,
+                                                 element_id TEXT,
+                                                 title TEXT,
+                                                 FOREIGN KEY (element_id) REFERENCES elements (id) ON DELETE CASCADE
+        );
 `,
 ).run();
 
 db.prepare(
     `
-   CREATE TABLE IF NOT EXISTS sheets (
-       id INTEGER PRIMARY KEY,
-       subcategory_id INTEGER,
-       shortName TEXT,
-       description TEXT,
-       code TEXT,
-       FOREIGN KEY (subcategory_id) REFERENCES subcategories (id) ON DELETE CASCADE
-    )
+    CREATE TABLE IF NOT EXISTS sheets (
+                                          id TEXT PRIMARY KEY,          -- Изменено на TEXT для UUID
+                                          subcategory_id TEXT,         -- Изменено на TEXT для UUID
+                                          shortName TEXT,
+                                          description TEXT,
+                                          code TEXT,
+                                          FOREIGN KEY (subcategory_id) REFERENCES subcategories (id) ON DELETE CASCADE
+        );
 `,
 ).run();
 
-async function initData() {
-    // Подготавливаем три разных SQL-запроса на вставку
+function initData() {
     const insertElement = db.prepare(`
         INSERT OR REPLACE INTO elements (id, category, language) 
         VALUES (@id, @category, @language)
@@ -134,36 +136,34 @@ async function initData() {
         VALUES (@id, @subcategory_id, @shortName, @description, @code)
     `);
 
-    // Используем транзакцию, чтобы все записалось быстро и безопасно
+    // Транзакция для безопасной и быстрой вставки всех уровней вложенности
     const transaction = db.transaction(() => {
         for (const element of ELEMENTS_LIST) {
-            // 1. Сохраняем сам элемент
+            // 1. Вставляем элемент
             insertElement.run({
                 id: element.id,
                 category: element.category,
-                language: element.language || null,
+                language: element.language,
             });
 
-            // Если у элемента есть подкатегории, перебираем их
+            // 2. Вставляем его подкатегории
             if (element.subcategory) {
                 for (const sub of element.subcategory) {
-                    // 2. Сохраняем подкатегорию, привязывая её к id элемента
                     insertSubcategory.run({
                         id: sub.id,
                         element_id: element.id,
                         title: sub.title,
                     });
 
-                    // Если в подкатегории есть шпаргалки, перебираем их
+                    // 3. Вставляем шпаргалки (sheets) для этой подкатегории
                     if (sub.sheet) {
-                        for (const sh of sub.sheet) {
-                            // 3. Сохраняем шпаргалку, привязывая её к id подкатегории
+                        for (const sheet of sub.sheet) {
                             insertSheet.run({
-                                id: sh.id,
+                                id: sheet.id,
                                 subcategory_id: sub.id,
-                                shortName: sh.shortName || null,
-                                description: sh.description || null,
-                                code: sh.code || null,
+                                shortName: sheet.shortName,
+                                description: sheet.description,
+                                code: sheet.code,
                             });
                         }
                     }
@@ -172,9 +172,9 @@ async function initData() {
         }
     });
 
-    // Запускаем процесс
     transaction();
-    console.log("Данные успешно импортированы!");
+    console.log("База данных успешно инициализирована данными.");
 }
 
+// Запуск заполнения
 initData();
