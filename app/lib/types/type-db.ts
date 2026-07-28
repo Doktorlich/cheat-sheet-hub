@@ -1,8 +1,23 @@
+export type Mode = {
+  mode: "build" | "edit";
+};
+
 export type Sheet = {
     id: string;
     shortName: string;
     description: string;
     code: string;
+};
+
+export interface ICategoryCheatSheet {
+  elementId?: string;
+  subcategoryId?: string;
+  sheetId?: string;
+  category?: string;
+  title?: string;
+  shortName?: string;
+  description?: string;
+  code?: string;
 };
 
 // Новый тип для подкатегорий (hooks, custom hooks)

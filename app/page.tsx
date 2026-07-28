@@ -16,7 +16,7 @@ export default function Home() {
     return (
         <>
             <div className={classes.builder}>
-                <Link href={"/builder"}>Builder cheat sheet</Link>
+                <Link href={"/builder?mode=create"}>Builder cheat sheet</Link>
             </div>
             <section className={classes.section}>
                 <div className={classes.container}>

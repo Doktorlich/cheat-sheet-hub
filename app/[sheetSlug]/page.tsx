@@ -1,7 +1,5 @@
 import classes from "./page.module.css";
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { getSheet } from "@/app/lib/actions";
 import CheatSheetList from "@/app/components/sheet/CheatSheetList";
 import Link from "next/link";
 
