@@ -13,7 +13,51 @@ export async function getCategories(): Promise<ICategory[]> {
   // await new Promise(resolve => setTimeout(resolve, 2000));
   return db.prepare("SELECT * FROM elements").all() as ICategory[];
 }
+// Обеспечивает существование категории и подкатегории в БД,
+// возвращает финальные id, с которыми нужно работать дальше
+function ensureCategoryAndSubcategory(category: any, subcategory: any) {
+  // Категория новая — создаём
+  if (category.category) {
+    db.prepare(
+      `INSERT INTO elements (id, category, language) VALUES (?, ?, ?)`
+    ).run(category.id, category.category, "jsx");
+  }
+  // если не новая — просто доверяем, что category.id уже существует в базе
 
+  // Подкатегория новая — создаём
+  if (subcategory.subcategory) {
+    db.prepare(
+      `INSERT INTO subcategories (id, element_id, title) VALUES (?, ?, ?)`
+    ).run(subcategory.id, category.id, subcategory.subcategory);
+  }
+
+  return {
+    categoryId: category.id as string,
+    subcategoryId: subcategory.id as string,
+  };
+}
+
+export async function updateCheatSheet(cheatSheet: any) {
+  const { category, subcategory, sheet } = cheatSheet;
+
+  const cleanShortName = xss((sheet.shortName || "").trim());
+  const cleanCode = (sheet.codeBlock || "").trim();
+  const cleanDescription = xss((sheet.description || "").trim());
+
+  const transaction = db.transaction(() => {
+    const { subcategoryId } = ensureCategoryAndSubcategory(category, subcategory);
+
+    const result = db
+      .prepare(`UPDATE sheets SET subcategory_id = ?, shortName = ?, description = ?, code = ? WHERE id = ?`)
+      .run(subcategoryId, cleanShortName, cleanDescription, cleanCode, sheet.id);
+
+    if (result.changes === 0) {
+      throw new Error(`Sheet with id ${sheet.id} not found — nothing was updated`);
+    }
+  });
+
+  transaction();
+}
 export async function getCategory(categorySlug: string): Promise<ICategory> {
   // Декодируем %D1%84... обратно в нормальные русские буквы
   const decodedSlug = decodeURIComponent(categorySlug);
@@ -95,58 +139,16 @@ export async function getAllCategoriesData(): Promise<ICategory[]> {
 export async function saveCheatSheet(cheatSheet: any) {
   const { category, subcategory, sheet } = cheatSheet;
 
-  // 1. Очищаем строки от XSS.
-  // Обратите внимание: берём sheet.codeBlock, как вы и передали в экшене!
   const cleanShortName = xss((sheet.shortName || "").trim());
   const cleanCode = (sheet.codeBlock || "").trim();
   const cleanDescription = xss((sheet.description || "").trim());
 
-  // 2. Запускаем транзакцию
   const transaction = db.transaction(() => {
-    // ==================================================
-    // ШАГ 1: КАТЕГОРИЯ (elements)
-    // ==================================================
-    // Проверяем, пришло ли имя новой категории (значит, это была опция "other")
-    if (category.category) {
-      db.prepare(
-        `
-                INSERT INTO elements (id, category, language) 
-                VALUES (?, ?, ?)
-            `,
-      ).run(category.id, category.category, "jsx"); // язык по умолчанию
-    }
-    // Если категория существующая, мы её НЕ трогаем и НЕ перезаписываем,
-    // так как она уже есть в таблице elements под своим category.id
+    const { subcategoryId } = ensureCategoryAndSubcategory(category, subcategory);
 
-    // ==================================================
-    // ШАГ 2: ПОДКАТЕГОРИЯ (subcategories)
-    // ==================================================
-    // Проверяем, пришло ли имя новой подкатегории
-    if (subcategory.subcategory) {
-      // ВАЖНО: В SQL-запросе пишем колонку "title" (как в вашей схеме БД),
-      // а значение передаем из вашего объекта subcategory.subcategory
-      db.prepare(
-        `
-                INSERT INTO subcategories (id, element_id, title) 
-                VALUES (?, ?, ?)
-            `,
-      ).run(subcategory.id, category.id, subcategory.subcategory);
-    }
-    // Если подкатегория существующая, мы её тоже НЕ перезаписываем,
-    // она уже лежит в базе под своим subcategory.id
-
-    // ==================================================
-    // ШАГ 3: ШПАРГАЛКА (sheets)
-    // ==================================================
-    // Карта (sheet) создается ВСЕГДА. Привязываем её к subcategory.id
-    db.prepare(
-      `
-            INSERT INTO sheets (id, subcategory_id, shortName, description, code) 
-            VALUES (?, ?, ?, ?, ?)
-        `,
-    ).run(
-      sheet.id, // UUID из экшена
-      subcategory.id, // ID подкатегории (новый UUID или старый из селекта)
+    db.prepare(`INSERT INTO sheets (id, subcategory_id, shortName, description, code) VALUES (?, ?, ?, ?, ?)`).run(
+      sheet.id,
+      subcategoryId,
       cleanShortName,
       cleanDescription,
       cleanCode,

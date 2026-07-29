@@ -1,69 +1,72 @@
 "use server";
 
-import { saveCheatSheet } from "@/app/lib/cheatSheet";
+import { saveCheatSheet, updateCheatSheet } from "@/app/lib/cheatSheet";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { Mode } from "@/app/lib/types/type-db";
 
+type ActionMeta = {mode: Mode; sheetId?:string}
 function isInvalidateText(text: string) {
     return !text || text.trim() === "";
 }
+function isReservedWord(text: string) {
+  return text.trim().toLowerCase() === "other";
+}
+export async function buildCheatSheet(meta: ActionMeta, prevState: never, formData: FormData) {
+  const category =
+    formData.get("category") === "other"
+      ? { id: crypto.randomUUID(), category: formData.get("new-category") }
+      : { id: formData.get("category") };
 
-export async function buildCheatSheet(prevState: never, formData: FormData) {
-    // если выбрано свойство other то в обьект передаем new-category
-    // при выборе select  мы получаем строку ID т к в option передаем ID
-    const category =
-        formData.get("category") === "other"
-            ? { id: crypto.randomUUID(), category: formData.get("new-category") }
-            : { id: formData.get("category") }; // тут получааем ID из name=category
-    const subcategory =
-        formData.get("subcategory") === "other"
-            ? { id: crypto.randomUUID(), subcategory: formData.get("new-subcategory") }
-            : { id: formData.get("subcategory") };
-    console.log("subcategory", subcategory);
-    // мне нужно сделать поиск по существующему массиву, в нем ищем по id в category если есть поле с таким id, если нет, то принимаем новые данные
-    // из new-category
-    // то начинаем искать по id подкатегории если есть
-    // то в данную категорию записываем cheatsheet , если нет создаем новую получая из subcategory
+  const subcategory =
+    formData.get("subcategory") === "other"
+      ? { id: crypto.randomUUID(), subcategory: formData.get("new-subcategory") }
+      : { id: formData.get("subcategory") };
 
-    const cheatSheet = {
-        category: category,
-        subcategory: subcategory,
-        sheet: {
-            id: crypto.randomUUID(),
-            shortName: formData.get("short-name"),
-            codeBlock: formData.get("code-block"),
-            description: formData.get("description"),
-        },
-    };
-    // 1. Проверяем категорию: если она новая, имя должно быть заполнено. Если старая — должен быть ID.
-    const isCategoryInvalid =
-        formData.get("category") === "other"
-            ? isInvalidateText(cheatSheet.category.category)
-            : isInvalidateText(cheatSheet.category.id);
+  const sheet = {
+    id: meta.mode === "edit" ? meta.sheetId! : crypto.randomUUID(),
+    shortName: formData.get("short-name"),
+    codeBlock: formData.get("code-block"),
+    description: formData.get("description"),
+  };
 
-    // 2. Проверяем подкатегорию по такому же принципу
-    const isSubcategoryInvalid =
-        formData.get("subcategory") === "other"
-            ? isInvalidateText(cheatSheet.subcategory.subcategory)
-            : isInvalidateText(cheatSheet.subcategory.id);
+  const cheatSheet = { category, subcategory, sheet };
 
-    // 3. Карточка проверяется всегда
-    const isSheetInvalid =
-        isInvalidateText(cheatSheet.sheet.codeBlock) ||
-        isInvalidateText(cheatSheet.sheet.description) ||
-        isInvalidateText(cheatSheet.sheet.shortName);
+  const isCategoryInvalid =
+    formData.get("category") === "other"
+      ? isInvalidateText(cheatSheet.category.category as string)
+      : isInvalidateText(cheatSheet.category.id as string);
 
-    // 4. Финальное условие
-    if (isCategoryInvalid || isSubcategoryInvalid || isSheetInvalid) {
-        console.log("ERROR VALIDATION");
-        return { messages: "An error occurred while validating the form input" };
-    }
+  const isSubcategoryInvalid =
+    formData.get("subcategory") === "other"
+      ? isInvalidateText(cheatSheet.subcategory.subcategory as string)
+      : isInvalidateText(cheatSheet.subcategory.id as string);
 
+  const isSheetInvalid =
+    isInvalidateText(cheatSheet.sheet.codeBlock as string) ||
+    isInvalidateText(cheatSheet.sheet.description as string) ||
+    isInvalidateText(cheatSheet.sheet.shortName as string);
 
-    console.log(cheatSheet);
+  if (isCategoryInvalid || isSubcategoryInvalid || isSheetInvalid) {
+    return { messages: "An error occurred while validating the form input" };
+  }
+
+  const isCategoryReserved =
+    formData.get("category") === "other" && isReservedWord(cheatSheet.category.category as string);
+  const isSubcategoryReserved =
+    formData.get("subcategory") === "other" && isReservedWord(cheatSheet.subcategory.subcategory as string);
+
+  if (isCategoryInvalid || isSubcategoryInvalid || isSheetInvalid || isCategoryReserved || isSubcategoryReserved) {
+    return { messages: "Category/subcategory name cannot be 'other'" };
+  }
+
+  if (meta.mode === "edit") {
+    await updateCheatSheet(cheatSheet);
+  } else {
     await saveCheatSheet(cheatSheet);
-    // revalidatePath("/")
-    redirect("/");
+  }
+
+  redirect("/");
 }
 
 // category

@@ -4,17 +4,21 @@ import classes from "./BuilderForm.module.css";
 import React, { ReactNode, useActionState } from "react";
 import { buildCheatSheet } from "@/app/lib/actions";
 
-import { Mode, Sheet } from "@/app/lib/types/type-db";
+import { ICategoryCheatSheet, Mode } from "@/app/lib/types/type-db";
 
 interface BuilderFormProps {
-  // categories: ICategory;
   children?: ReactNode;
-  initialData?: Sheet;
+  initialData?: ICategoryCheatSheet;
   mode: Mode;
 }
 
 export default function BuilderForm({ initialData, mode, children }: BuilderFormProps) {
-  const [state, formAction, isPending] = useActionState(buildCheatSheet, { messages: null });
+  const actionWithMeta = buildCheatSheet.bind(null, {
+    mode,
+    sheetId: initialData?.sheetId,
+  });
+
+  const [state, formAction, isPending] = useActionState(actionWithMeta, { messages: null });
   console.log("initialData", initialData);
   return (
     <>

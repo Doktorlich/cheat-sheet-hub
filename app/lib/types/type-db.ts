@@ -1,6 +1,4 @@
-export type Mode = {
-  mode: "build" | "edit";
-};
+export type Mode = "build" | "edit";
 
 export type Sheet = {
     id: string;

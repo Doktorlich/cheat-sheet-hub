@@ -31,12 +31,7 @@ export default function CategorySelector({ mode, initialData, categories }: Cate
     setIsSelectSubOther(e.target.value);
   }
 
-  if (mode === "edit") {
-    const category = categories.find(item => item.id === initialData?.elementId);
-    const subcategory = currentCategoryData?.subcategory?.find(item => item.id === initialData?.subcategoryId);
-    console.log("category", category?.category);
-    console.log("subcategory", subcategory.title);
-  }
+
   return (
     <>
       {/*При выборе в select "Other", должно показываться поле input куда нужно ввести новое имя категории*/}
